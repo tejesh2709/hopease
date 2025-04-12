@@ -4,7 +4,6 @@ This project was generated using our custom project scaffolding tool. It include
 
 - A frontend project (React or Next.js) with optional TailwindCSS setup.
 
-- A backend project (JavaScript/TypeScript) with Express and a database configuration.
 
 
 ## Setup Instructions
@@ -16,15 +15,7 @@ This project was generated using our custom project scaffolding tool. It include
 
 
 ### Backend
-1. Navigate to the server folder: `cd server`
-2. Update the `.env` file with your configuration:
-
-   - For MongoDB, set `MONGODB_URI` (e.g., `mongodb+srv://<username>:<password>@cluster0.mongodb.net/<databaseName>?retryWrites=true&w=majority`)
-   - For FireBase, set `FIREBASE_SERVICE_ACCOUNT` and `FIREBASE_DATABASE_URL`
-   - For SupaBase, set `SUPABASE_URL` and `SUPABASE_KEY`
-
-3. Run the development server: `npm run dev`
-
+No backend setup was performed.
 
 ## Notes
 - Ensure you have Node.js installed.
