@@ -32,33 +32,33 @@ const Skeleton = () => (
 );
 const items = [
   {
-    title: "",
+    title: "Smart Hobby Suggestions",
     description:
-      "Your original media remains unchanged as encrypted ownership metadata is discreetly embedded within it",
+      "Get AI-powered hobby recommendations tailored to your goals, interests, and personality",
     header: <Skeleton />,
     className: "md:col-span-2",
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Robust Encryption",
+    title: "RobustPersonalized Hobby Levels Encryption",
     description:
-      "Utilizes AES encryption to safeguard hidden information, making unauthorized decoding virtually impossible",
+      "Each hobby comes with unique, gamified levels to keep learning fun, engaging, and goal-driven.",
     header: <Skeleton />,
     className: "md:col-span-1",
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Tamper-Proof Ownership",
+    title: "Seamless User Onboarding",
     description:
-      "Easily extract and verify embedded data to prove authenticity and claim ownership in disputes",
+      "Effortless sign-up and onboarding flow with Clerk, capturing just enough to personalize the experience",
     header: <Skeleton />,
     className: "md:col-span-1",
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Cross-Media Compatibility",
+    title: "Progressive Gamification Engine",
     description:
-      "Designed to work seamlessly with images, videos, and documents, catering to diverse creative needs",
+      "Track your journey, earn XP, unlock badges, and level up—turning self-growth into a rewarding game",
     header: <Skeleton />,
     className: "md:col-span-2",
     icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,

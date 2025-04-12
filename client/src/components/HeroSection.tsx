@@ -4,7 +4,7 @@ import {
   SignedOut,
   SignInButton,
 } from "@clerk/clerk-react";
-import { Cover } from "@/components/ui/Cover";
+import Link from "next/link";
 
 function HeroSection() {
   return (
@@ -36,7 +36,7 @@ function HeroSection() {
             >
               scrolling
             </motion.span>{" "}
-            With purposeful{" "}
+            with purposeful{" "}
             <span className="bg-white text-black px-2">action</span>
           </div>
           <div className="font-extralight text-base text-center md:text-2xl dark:text-neutral-200 py-4 px-[15vw]">
@@ -44,13 +44,11 @@ function HeroSection() {
             topics. Then take action using our curated action plans. No app
             blocking or deleting required.
           </div>
-          <SignedOut>
-            <SignInButton>
-              <button className="bg-black dark:bg-white cursor-pointer rounded-full w-fit text-white dark:text-black px-6 py-2">
-                Get Started
-              </button>
-            </SignInButton>
-          </SignedOut>
+          <Link href="/survey" className="text-white">
+            <button className="bg-black dark:bg-white cursor-pointer rounded-full w-fit text-white dark:text-black px-6 py-2">
+              Get Started
+            </button>
+          </Link>
         </motion.div>
       </AuroraBackground>
     </>
