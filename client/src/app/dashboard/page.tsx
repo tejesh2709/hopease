@@ -71,7 +71,7 @@ const LearnPage: NextPage = () => {
           ].map((item) => (
             <motion.a
               key={item.id}
-              href="#"
+              href={`/${item.id}`}
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setActiveNav(item.id)}

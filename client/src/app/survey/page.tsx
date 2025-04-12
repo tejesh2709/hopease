@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import  {useRouter} from 'next/navigation';
 
 const questions = [
   {
@@ -77,6 +77,8 @@ const questions = [
 ];
 
 export default function Home() {
+
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: number]: string | string[] }>({});
 
@@ -117,8 +119,7 @@ export default function Home() {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      console.log("Submit Answers:", answers);
-      alert("All answers submitted!");
+      router.push("/dashboard");
     }
   };
 
