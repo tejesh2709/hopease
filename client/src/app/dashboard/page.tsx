@@ -5,16 +5,12 @@ import { Sidebar } from "@/components/index";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LearnPage: NextPage = () => {
-  // State for hover effects and animations
-  const [activeNav, setActiveNav] = useState("home");
   const [isLoaded, setIsLoaded] = useState(false);
   const [showXpAnimation, setShowXpAnimation] = useState(false);
 
-  // Simulating page load
   useEffect(() => {
     setIsLoaded(true);
 
-    // Show XP animation after a delay
     const timer = setTimeout(() => {
       setShowXpAnimation(true);
     }, 1500);
