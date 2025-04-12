@@ -7,8 +7,6 @@ import {
 } from "@tabler/icons-react";
 
 function Features() {
-
-
   return (
   <>
     <div className="text-center text-bold text-[7vw] py-10">
@@ -34,7 +32,7 @@ const Skeleton = () => (
 );
 const items = [
   {
-    title: "Invisible Security",
+    title: "",
     description:
       "Your original media remains unchanged as encrypted ownership metadata is discreetly embedded within it",
     header: <Skeleton />,

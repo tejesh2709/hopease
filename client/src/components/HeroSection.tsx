@@ -39,8 +39,10 @@ function HeroSection() {
             With purposeful{" "}
             <span className="bg-white text-black px-2">action</span>
           </div>
-          <div className="font-extralight text-base md:text-3xl dark:text-neutral-200 py-4">
-            Empower your creative works with an invisible layer of security
+          <div className="font-extralight text-base text-center md:text-2xl dark:text-neutral-200 py-4 px-[15vw]">
+            Find what you love by browsing over 1000 unique interests and
+            topics. Then take action using our curated action plans. No app
+            blocking or deleting required.
           </div>
           <SignedOut>
             <SignInButton>
