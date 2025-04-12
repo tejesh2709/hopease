@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const questions = [
   {
@@ -82,6 +82,16 @@ export default function Home() {
 
   const currentQuestion = questions[currentIndex];
 
+  // 🔧 Initialize answer for the current question to prevent uncontrolled input warning
+  useEffect(() => {
+    if (!answers.hasOwnProperty(currentIndex)) {
+      setAnswers((prev) => ({
+        ...prev,
+        [currentIndex]: currentQuestion.type === "single" ? "" : [],
+      }));
+    }
+  }, [currentIndex]);
+
   const handleOptionChange = (option: string) => {
     const updatedAnswers = { ...answers };
 
@@ -114,14 +124,17 @@ export default function Home() {
 
   const isSelected = (option: string) => {
     const answer = answers[currentIndex];
-    return currentQuestion.type === "single"
-      ? answer === option
-      : (answer as string[])?.includes(option);
+    if (currentQuestion.type === "single") {
+      return answer === option;
+    } else {
+      return Array.isArray(answer) && answer.includes(option);
+    }
   };
 
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="w-1/2 p-10 font-sans">
+        {/* Navigation and Progress */}
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={handlePrevious}
@@ -137,12 +150,15 @@ export default function Home() {
             ></div>
           </div>
         </div>
-        <div className="border-2 border-gray-600 mb-10 rounded-2xl p-2">
-        <p className="text-xl mb-1">{currentQuestion.question}</p> 
-        <p className="mb-2 text-lg text-gray-600">{currentQuestion.description}</p>
-        </div>
-        <div className="grid grid-cols-2 w-full gap-4">
 
+        {/* Question Box */}
+        <div className="border-2 border-gray-600 mb-10 rounded-2xl p-2">
+          <p className="text-xl mb-1">{currentQuestion.question}</p>
+          <p className="mb-2 text-lg text-gray-600">{currentQuestion.description}</p>
+        </div>
+
+        {/* Options */}
+        <div className="grid grid-cols-2 w-full gap-4">
           {currentQuestion.options.map((option, i) => (
             <div key={i} className="mb-3">
               <label className="block cursor-pointer">
@@ -172,6 +188,7 @@ export default function Home() {
           ))}
         </div>
 
+        {/* Next Button */}
         <div className="mt-6 flex justify-end p-1">
           <button
             onClick={handleNext}
