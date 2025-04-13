@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getHobbyRecommendations, getHobbyLevels } from "../controllers/hobbyController";
+import { getHobbyRecommendations, getHobbyLevels } from "../controllers/hobbyController.ts";
 
 const router = Router();
 

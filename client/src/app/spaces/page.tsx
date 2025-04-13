@@ -1,305 +1,362 @@
 "use client";
-
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Sidebar } from "@/components/index";
+import { useRouter } from "next/navigation";
 
 export default function CommunitiesPage() {
+  const router = useRouter();
+  const [selectedCommunity, setSelectedCommunity] = useState<number | null>(
+    null
+  );
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   const hobbyCommunities = [
     {
-      name: "🎨 Digital Art",
+      name: "Digital Art",
+      icon: "🎨",
       description: "Sketch, paint or animate — let's get creative!",
       members: 1238,
       activity: "Very Active",
     },
     {
-      name: "📚 Bookworms",
+      name: "Bookworms",
+      icon: "📚",
       description: "Read. Review. Repeat. Join the reading marathon!",
       members: 956,
       activity: "Active",
     },
     {
-      name: "🎸 Music Makers",
+      name: "Music Makers",
+      icon: "🎸",
       description: "Compose, jam, or remix with fellow musicians.",
       members: 1402,
       activity: "Very Active",
     },
     {
-      name: "🧘 Mindful Living",
+      name: "Mindful Living",
+      icon: "🧘",
       description: "Habits, journaling, and peace — we're all about balance.",
       members: 784,
       activity: "Moderate",
     },
     {
-      name: "📷 Photography",
+      name: "Photography",
+      icon: "📷",
       description: "Capture moments and share perspectives.",
       members: 1105,
       activity: "Active",
     },
+    {
+      name: "Culinary Arts",
+      icon: "🍳",
+      description: "Cook, bake, and explore flavors from around the world.",
+      members: 921,
+      activity: "Active",
+    },
   ];
 
-  const leaderboard = [
-    { name: "Maya", points: 1500, avatar: "M", badge: "🏆" },
-    { name: "Arjun", points: 1200, avatar: "A", badge: "🥈" },
-    { name: "Zara", points: 950, avatar: "Z", badge: "🥉" },
-    { name: "Kai", points: 820, avatar: "K", badge: "⭐" },
-    { name: "Leo", points: 780, avatar: "L", badge: "⭐" },
-  ];
+  // Function to format hobby name for URL
+  const formatForUrl = (name: string) => {
+    return name.toLowerCase().replace(/\s+/g, "-");
+  };
 
-  // Container animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  // Handle community button click
+  const handleCommunityAction = (index: number) => {
+    if (selectedCommunity === index) {
+      // If already selected, navigate to spaces-detail page
+      const hobbyName = formatForUrl(hobbyCommunities[index].name);
+      router.push(`/spaces-detail/${hobbyName}`);
+    } else {
+      // Otherwise, select it
+      setSelectedCommunity(index);
+    }
+  };
+
+  // Subtle fade-up animation for elements
+  const fadeUp = {
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        staggerChildren: 0.1,
+        type: "tween",
+        duration: 0.4,
+        ease: "easeOut",
       },
     },
   };
 
-  // Item animation variants
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+  // Stagger effect for card entrance
+  const staggerContainer = {
+    hidden: { opacity: 0 },
     visible: {
-      y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100 },
+      transition: {
+        staggerChildren: 0.07,
+      },
     },
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0f0117] to-[#1a0b2e] text-white p-6 md:p-10">
-      {/* Decorative background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-purple-900/20 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 left-0 w-1/4 h-1/4 bg-indigo-900/20 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-1/4 h-1/4 bg-violet-900/20 rounded-full blur-[100px]" />
-      </div>
-
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 text-center mb-12"
-      >
-        <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-purple-400 to-violet-300">
-          🌱 Hobby Communities
-        </h1>
-        <p className="text-lg text-purple-200/80 max-w-2xl mx-auto">
-          Connect with like-minded enthusiasts and explore new passions together
-        </p>
-      </motion.div>
-
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            {/* Journal / Profile */}
+    <div className="min-h-screen w-full flex bg-[#0d0d0d] text-[#f5f5f7]">
+      <Sidebar />
+      <div className="flex-1 py-10 px-10 overflow-y-auto">
+        <div className="max-w-6xl mx-auto">
+          {/* Header with minimal purple accent */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-              className="relative bg-gradient-to-br from-purple-900/40 to-violet-900/40 p-6 rounded-2xl shadow-xl backdrop-blur-sm border border-purple-500/20 overflow-hidden"
+              transition={{ duration: 0.5 }}
+              className="mb-6 md:mb-0"
             >
-              {/* Subtle glow effect */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/30 rounded-full blur-3xl" />
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-gradient-to-br from-purple-500 to-indigo-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">🪪</span>
-                </div>
-
-                <div className="flex-grow">
-                  <h2 className="text-2xl font-bold mb-2 text-purple-100">
-                    Your Hobby Journal
-                  </h2>
-                  <p className="text-purple-200">
-                    You've been growing in{" "}
-                    <span className="font-semibold text-white">
-                      Digital Art
-                    </span>
-                    . You completed 3 beginner challenges and earned your first
-                    badge!
-                  </p>
-
-                  <div className="flex items-center mt-4 space-x-2">
-                    <motion.div
-                      whileHover={{
-                        rotate: [0, -10, 10, 0],
-                        transition: { duration: 0.5 },
-                      }}
-                      className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 flex items-center justify-center shadow-lg"
-                    >
-                      <span>🌟</span>
-                    </motion.div>
-                    <span className="text-sm text-purple-300">
-                      Your first achievement badge!
-                    </span>
-                  </div>
-
-                  <p className="text-sm text-purple-400 mt-4">
-                    Keep learning, keep sketching 🎨
-                  </p>
-                </div>
-              </div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="mt-5 flex justify-end"
-              >
-                <button className="bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-2 rounded-lg hover:shadow-lg hover:shadow-purple-500/25 transition-all text-sm font-semibold">
-                  View Full Journal
-                </button>
-              </motion.div>
+              <h1 className="text-3xl font-light tracking-tight mb-1.5">
+                Explore <span className="font-medium">Communities</span>
+              </h1>
+              <p className="text-gray-500 text-sm">
+                Connect with enthusiasts and discover new passions
+              </p>
             </motion.div>
 
-            {/* Communities */}
+            {/* Your Journal Summary - Minimal Card with subtle purple */}
             <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+              initial={{ opacity: 0, x: 5 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex items-center gap-3 bg-[#161616] px-4 py-2.5 rounded-lg shadow-sm"
             >
-              {hobbyCommunities.map((hobby, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  onMouseEnter={() => setHoveredCard(index)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  className="relative bg-gradient-to-br from-purple-900/30 to-indigo-900/20 rounded-xl p-5 backdrop-blur-sm border border-purple-500/10 overflow-hidden group"
-                >
-                  {/* Background effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-purple-600/5 via-transparent to-indigo-600/5"
+              <div className="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center">
+                <span className="text-sm">N</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium flex items-center gap-2">
+                  Hobby Journal
+                  <motion.span
                     animate={{
-                      opacity: hoveredCard === index ? 1 : 0,
+                      scale: [1, 1.15, 1],
+                      opacity: [0.7, 1, 0.7],
                     }}
-                    transition={{ duration: 0.3 }}
-                  />
-
-                  <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-200 transition-colors">
-                    {hobby.name}
-                  </h3>
-                  <p className="text-purple-300 mb-4">{hobby.description}</p>
-
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                      <div className="text-xs text-purple-400 bg-purple-900/30 px-2 py-1 rounded-full">
-                        {hobby.members.toLocaleString()} members
-                      </div>
-                      <div className="text-xs text-purple-400 bg-purple-900/30 px-2 py-1 rounded-full">
-                        {hobby.activity}
-                      </div>
-                    </div>
-                  </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-2.5 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all"
-                  >
-                    Join Community
-                  </motion.button>
-                </motion.div>
-              ))}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      repeatDelay: 2,
+                    }}
+                    className="inline-block w-2 h-2 rounded-full bg-purple-500/70"
+                  ></motion.span>
+                </p>
+                <p className="text-xs text-gray-500">Level 3 • Digital Art</p>
+              </div>
             </motion.div>
           </div>
 
-          {/* Sidebar with Leaderboard */}
+          {/* Filter Bar */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-gradient-to-br from-purple-900/40 to-violet-900/30 p-6 rounded-2xl shadow-xl backdrop-blur-sm border border-purple-500/20"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="flex flex-wrap gap-2 mb-8"
           >
-            <h2 className="text-xl font-bold mb-6 flex items-center">
-              <span className="text-2xl mr-2">🏅</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 to-amber-400">
-                Community Leaderboard
-              </span>
-            </h2>
-
-            <div className="space-y-2">
-              {leaderboard.map((user, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  className="flex items-center justify-between p-3 rounded-xl bg-purple-900/20 border border-purple-500/10"
+            {["All", "For You", "Popular", "New", "Creative", "Active"].map(
+              (filter, index) => (
+                <motion.button
+                  key={filter}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
+                    index === 0
+                      ? "bg-[#1c1c1c] text-white"
+                      : "bg-transparent text-gray-400 hover:text-gray-300"
+                  }`}
                 >
-                  <div className="flex items-center">
-                    <div className="relative mr-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center font-bold">
-                        {user.avatar}
-                      </div>
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-purple-900 flex items-center justify-center text-xs">
-                        {user.badge}
-                      </div>
-                    </div>
-                    <span className="font-medium">{user.name}</span>
-                  </div>
-                  <div className="text-purple-300 font-semibold">
-                    {user.points.toLocaleString()} pts
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  {filter}
+                </motion.button>
+              )
+            )}
+          </motion.div>
 
-            {/* Your Rank */}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/30">
-              <div className="text-sm text-purple-300 mb-2">Your Rank</div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-bold mr-2 text-sm">
-                    N
-                  </div>
-                  <span className="font-medium">You (Nischa)</span>
+          {/* Featured Event - Simple Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ scale: 1.005 }}
+            className="relative bg-gradient-to-r from-[#161616] to-[#131313] rounded-xl p-5 mb-10 overflow-hidden group border border-[#232323]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] to-[#0c0c0c] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+            <div className="relative flex items-start justify-between">
+              <div>
+                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">
+                  Featured Event • April 15
                 </div>
-                <div className="text-purple-300 font-semibold">720 pts</div>
+                <h3 className="text-xl font-medium mb-2">
+                  Digital Art Workshop
+                </h3>
+                <p className="text-sm text-gray-400 max-w-2xl">
+                  Join our Saturday live session with professional artists where
+                  you'll learn advanced techniques for digital illustration.
+                </p>
+
+                <div className="mt-4 flex items-center gap-4">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="px-4 py-2 bg-[#1d1d1d] hover:bg-[#252525] rounded-lg text-sm font-medium transition-colors border border-purple-900/20"
+                  >
+                    Learn More
+                  </motion.button>
+                  <div className="text-sm text-gray-500 flex items-center gap-2">
+                    <motion.span
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="inline-block w-1.5 h-1.5 rounded-full bg-purple-500/70"
+                    ></motion.span>
+                    114 attending
+                  </div>
+                </div>
               </div>
-              <div className="mt-3 h-2 w-full bg-purple-900/50 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-purple-500 to-indigo-500"
-                  initial={{ width: 0 }}
-                  animate={{ width: "60%" }}
-                  transition={{ delay: 1, duration: 1 }}
-                />
-              </div>
-              <div className="mt-1 text-xs text-purple-400 text-right">
-                280 pts until next rank
+
+              <div className="h-16 w-16 rounded-lg bg-[#1a1a1a] flex items-center justify-center">
+                <span className="text-2xl">🖌️</span>
               </div>
             </div>
+          </motion.div>
 
-            {/* Call To Action */}
-            <motion.div
-              className="mt-6"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+          {/* Communities Grid - Clean, Minimal Cards */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {hobbyCommunities.map((hobby, index) => (
+              <motion.div
+                key={index}
+                variants={fadeUp}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() =>
+                  setSelectedCommunity(
+                    selectedCommunity === index ? null : index
+                  )
+                }
+                className={`relative bg-[#151515] border border-[#232323] rounded-xl p-6 cursor-pointer transition-all duration-300 ${
+                  selectedCommunity === index
+                    ? "ring-1 ring-purple-900/30"
+                    : hoveredCard === index
+                    ? "bg-[#171717]"
+                    : ""
+                }`}
+              >
+                {/* Subtle indicator dot - only purple element */}
+                {selectedCommunity === index && (
+                  <motion.div
+                    layoutId="selected-dot"
+                    className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-purple-500/70"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                  ></motion.div>
+                )}
+
+                <div className="mb-4">
+                  <motion.div
+                    whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                    className="inline-block text-2xl mb-2"
+                  >
+                    {hobby.icon}
+                  </motion.div>
+                  <h3 className="text-lg font-medium">{hobby.name}</h3>
+                  <p className="text-sm text-gray-400 mt-1 min-h-[40px]">
+                    {hobby.description}
+                  </p>
+                </div>
+
+                <div className="flex items-center text-xs text-gray-500 space-x-3 mb-5">
+                  <span>{hobby.members.toLocaleString()} members</span>
+                  <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                  <span>{hobby.activity}</span>
+                </div>
+
+                <AnimatePresence>
+                  {selectedCommunity === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="py-3 border-t border-[#232323] mb-4">
+                        <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+                          <span>Current Challenges</span>
+                          <span>2 active</span>
+                        </div>
+                        <div className="text-sm">
+                          Weekly sketch prompt: "Motion"
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card selection
+                    if (selectedCommunity === index) {
+                      // Navigate to spaces-detail page
+                      const hobbyName = formatForUrl(hobby.name);
+                      router.push(`/spaces-detail/${hobbyName}`);
+                    } else {
+                      setSelectedCommunity(index);
+                    }
+                  }}
+                  className={`w-full py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedCommunity === index
+                      ? "bg-white text-black hover:bg-gray-100"
+                      : "bg-[#1d1d1d] hover:bg-[#252525]"
+                  }`}
+                >
+                  {selectedCommunity === index
+                    ? "Join Community"
+                    : "View Details"}
+                </motion.button>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Discover More Communities Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-10 flex justify-center"
+          >
+            <motion.button
+              whileHover={{
+                y: -1,
+                boxShadow: "0 0 10px rgba(139, 92, 246, 0.1)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="px-6 py-3 bg-[#181818] rounded-lg text-sm flex items-center gap-2 transition-all border border-purple-900/10"
             >
-              <button className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 p-3 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all">
-                Discover More Communities
-              </button>
-            </motion.div>
-
-            {/* Featured Event */}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-purple-800/30 to-violet-800/30 border border-purple-500/20">
-              <div className="text-sm text-purple-300 mb-1">Featured Event</div>
-              <h3 className="font-bold text-white mb-2">
-                Digital Art Workshop
-              </h3>
-              <p className="text-sm text-purple-300 mb-3">
-                Join us this Saturday for a live digital painting session with
-                professional artists!
-              </p>
-              <div className="flex justify-between text-xs text-purple-400">
-                <span>Apr 15, 2025</span>
-                <span>114 attending</span>
-              </div>
-            </div>
+              <span>Discover More Communities</span>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </motion.button>
           </motion.div>
         </div>
       </div>

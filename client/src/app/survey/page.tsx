@@ -1,15 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import  {useRouter} from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const questions = [
   {
     question: "How often do you scroll on your phone in a day?",
     description:
-      "Time Spent during scrolling daily(using social media). Arough estimate will do",
+      "Time spent during scrolling daily (using social media). A rough estimate will do",
     type: "single",
     options: [
-      "Less then 30 min",
+      "Less than 30 min",
       "1-2 hrs",
       "3-4 hrs",
       "5-6 hrs",
@@ -17,14 +18,14 @@ const questions = [
     ],
   },
   {
-    question: "What do u want out of your life?",
+    question: "What do you want out of your life?",
     description:
-      "Think about it for some time!You don't need to tell us if you don't want to.",
+      "Think about it for some time! You don't need to tell us if you don't want to.",
     type: "single",
     options: [
       "less screen time",
       "to feel less overwhelmed",
-      "to wakeup exicited",
+      "to wakeup excited",
       "to feel at peace in silence",
       "to enjoy each day",
       "I don't know",
@@ -61,8 +62,10 @@ const questions = [
     ],
   },
   {
-    question: "When was the last time you lost track of the time doing something you love?",
-    description: "Be honest! We want to help you make this type of thing a more frequent occurrence",
+    question:
+      "When was the last time you lost track of the time doing something you love?",
+    description:
+      "Be honest! We want to help you make this type of thing a more frequent occurrence",
     type: "single",
     options: [
       "Today",
@@ -76,15 +79,18 @@ const questions = [
   },
 ];
 
-export default function Home() {
-
+export default function Survey() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: number]: string | string[] }>({});
+  const [answers, setAnswers] = useState<{ [key: number]: string | string[] }>(
+    {}
+  );
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const currentQuestion = questions[currentIndex];
+  const progress = ((currentIndex + 1) / questions.length) * 100;
 
-  // 🔧 Initialize answer for the current question to prevent uncontrolled input warning
+  // Initialize answer for the current question
   useEffect(() => {
     if (!answers.hasOwnProperty(currentIndex)) {
       setAnswers((prev) => ({
@@ -104,6 +110,14 @@ export default function Home() {
       if (current.includes(option)) {
         updatedAnswers[currentIndex] = current.filter((o) => o !== option);
       } else {
+        // Limit to 2 choices for "Pick your two favorite activities"
+        if (
+          currentIndex === 2 &&
+          current.length >= 2 &&
+          !current.includes(option)
+        ) {
+          return;
+        }
         updatedAnswers[currentIndex] = [...current, option];
       }
     }
@@ -112,12 +126,22 @@ export default function Home() {
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    if (currentIndex > 0) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(currentIndex - 1);
+        setIsTransitioning(false);
+      }, 200);
+    }
   };
 
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(currentIndex + 1);
+        setIsTransitioning(false);
+      }, 200);
     } else {
       router.push("/dashboard");
     }
@@ -132,73 +156,182 @@ export default function Home() {
     }
   };
 
+  // Check if we can move to next question (validate current answer)
+  const canProceed = () => {
+    const answer = answers[currentIndex];
+    if (currentQuestion.type === "single") {
+      return answer !== "";
+    } else if (currentQuestion.type === "multiple") {
+      return Array.isArray(answer) && answer.length > 0;
+    }
+    return false;
+  };
+
   return (
-    <div className="flex h-screen justify-center items-center">
-      <div className="w-1/2 p-10 font-sans">
+    <div className="flex h-screen justify-center items-center bg-[#f5f5f7] dark:bg-[#111111]">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-3xl p-6 md:p-10 font-['SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif]"
+      >
         {/* Navigation and Progress */}
-        <div className="flex items-center gap-4 mb-6">
-          <button
+        <div className="flex items-center gap-5 mb-8">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handlePrevious}
             disabled={currentIndex === 0}
-            className="px-3 py-1 rounded disabled:opacity-50 text-gray-200 text-2xl"
+            className="p-2 rounded-full disabled:opacity-30 text-gray-700 dark:text-gray-300 transition-opacity"
+            aria-label="Previous question"
           >
-            ←
-          </button>
-          <div className="flex-1 h-4 bg-gray-600 rounded-full overflow-hidden border-2 border-gray-600">
-            <div
-              className="h-full bg-blue-500 transition-all duration-300 rounded-3xl"
-              style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
-            ></div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </motion.button>
+
+          <div className="flex-1">
+            <div className="h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                initial={{
+                  width: `${(currentIndex / questions.length) * 100}%`,
+                }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full"
+              />
+            </div>
+            <div className="flex justify-between mt-1 text-xs text-gray-500">
+              <span>
+                Question {currentIndex + 1} of {questions.length}
+              </span>
+              <span>{Math.round(progress)}% complete</span>
+            </div>
           </div>
         </div>
 
         {/* Question Box */}
-        <div className="border-2 border-gray-600 mb-10 rounded-2xl p-2">
-          <p className="text-xl mb-1">{currentQuestion.question}</p>
-          <p className="mb-2 text-lg text-gray-600">{currentQuestion.description}</p>
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, x: isTransitioning ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isTransitioning ? 20 : -20 }}
+            transition={{ duration: 0.4 }}
+            className="mb-10"
+          >
+            <h2 className="text-2xl md:text-3xl font-medium mb-3 text-gray-800 dark:text-gray-100">
+              {currentQuestion.question}
+            </h2>
+            <p className="mb-6 text-gray-500 dark:text-gray-400 leading-relaxed">
+              {currentQuestion.description}
+            </p>
+          </motion.div>
+        </AnimatePresence>
 
         {/* Options */}
-        <div className="grid grid-cols-2 w-full gap-4">
-          {currentQuestion.options.map((option, i) => (
-            <div key={i} className="mb-3">
-              <label className="block cursor-pointer">
-                <input
-                  type={currentQuestion.type === "single" ? "radio" : "checkbox"}
-                  name={`question-${currentIndex}`}
-                  value={option}
-                  className="hidden"
-                  checked={isSelected(option)}
-                  onChange={() => {
-                    handleOptionChange(option);
-                    if (currentQuestion.type === "single") {
-                      handleNext();
-                    }
-                  }}
-                />
-                <div
-                  className={`p-3 rounded-xl flex flex-grow bg-transparent transition-all border-b-2 duration-200 border ${isSelected(option)
-                      ? " text-blue-300"
-                      : "bg-blue-500 text-white border-gray-600"
-                    }`}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <AnimatePresence mode="wait">
+            {currentQuestion.options.map((option, i) => (
+              <motion.div
+                key={`${currentIndex}-${i}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.05 }}
+                className="relative"
+              >
+                <motion.label
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
+                  className="block cursor-pointer"
                 >
-                  {option}
-                </div>
-              </label>
-            </div>
-          ))}
+                  <input
+                    type={
+                      currentQuestion.type === "single" ? "radio" : "checkbox"
+                    }
+                    name={`question-${currentIndex}`}
+                    value={option}
+                    className="hidden"
+                    checked={isSelected(option)}
+                    onChange={() => {
+                      handleOptionChange(option);
+                      if (currentQuestion.type === "single") {
+                        setTimeout(handleNext, 300);
+                      }
+                    }}
+                  />
+                  <div
+                    className={`p-4 md:p-5 rounded-xl flex items-center transition-all duration-200 border shadow-sm ${
+                      isSelected(option)
+                        ? "bg-white dark:bg-[#1c1c1e] border-purple-300 dark:border-purple-600 shadow-md"
+                        : "bg-white dark:bg-[#1c1c1e] border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
+                    }`}
+                  >
+                    <div className="mr-4">
+                      <div
+                        className={`w-5 h-5 flex items-center justify-center rounded-full border-2 ${
+                          isSelected(option)
+                            ? "border-purple-500 bg-white dark:bg-transparent"
+                            : "border-gray-300 dark:border-gray-600"
+                        }`}
+                      >
+                        {isSelected(option) && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="w-2.5 h-2.5 rounded-full bg-purple-500"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <span
+                      className={`flex-1 text-base ${
+                        isSelected(option)
+                          ? "text-gray-800 dark:text-gray-100 font-medium"
+                          : "text-gray-600 dark:text-gray-400"
+                      }`}
+                    >
+                      {option}
+                    </span>
+                  </div>
+                </motion.label>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Next Button */}
-        <div className="mt-6 flex justify-end p-1">
-          <button
+        <motion.div
+          className="mt-8 flex justify-end"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            disabled={!canProceed()}
             onClick={handleNext}
-            className="px-4 py-2 rounded text-md bg-blue-600 text-white hover:bg-blue-700"
+            className={`px-6 py-3 rounded-full text-white shadow-sm transition-all duration-200 ${
+              canProceed()
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-md"
+                : "bg-gray-400 dark:bg-gray-700 opacity-70 cursor-not-allowed"
+            }`}
           >
-            {currentIndex === questions.length - 1 ? "Submit" : "Next"}
-          </button>
-        </div>
-      </div>
+            {currentIndex === questions.length - 1 ? "Submit" : "Continue"}
+          </motion.button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

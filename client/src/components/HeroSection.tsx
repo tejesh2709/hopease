@@ -1,9 +1,5 @@
 import {AuroraBackground} from "@/components/ui/Aurora-Background";
 import { motion } from "motion/react";
-import {
-  SignedOut,
-  SignInButton,
-} from "@clerk/clerk-react";
 import Link from "next/link";
 
 function HeroSection() {
@@ -39,11 +35,12 @@ function HeroSection() {
             with purposeful{" "}
             <span className="bg-white text-black px-2">action</span>
           </div>
-          <div className="font-extralight text-base text-center md:text-2xl dark:text-neutral-200 py-4 px-[15vw]">
-            Find what you love by browsing over 1000 unique interests and
+          <p className="font-light text-base md:text-2xl lg:text-xl text-center dark:text-white/90 text-black/90 py-5 max-w-3xl mx-auto leading-relaxed">
+            Find what you love by browsing over{" "}
+            <span className="font-medium">1000 unique interests</span> and
             topics. Then take action using our curated action plans. No app
             blocking or deleting required.
-          </div>
+          </p>
           <Link href="/survey" className="text-white">
             <button className="bg-black dark:bg-white cursor-pointer rounded-full w-fit text-white dark:text-black px-6 py-2">
               Get Started

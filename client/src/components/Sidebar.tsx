@@ -26,13 +26,13 @@ const defaultNavItems: NavItem[] = [
     id: "home",
     name: "Home",
     icon: "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z",
-    href: "/home",
+    href: "/dashboard",
   },
   {
     id: "map",
     name: "Curiosity Map",
     icon: "M5 4v16c0 1.1.9 2 2 2h13V4H5zm2 2h9v12H7V6zm-3 0H2v16c0 1.1.9 2 2 2h1V6z",
-    href: "/map",
+    href: "/curiosity-map",
   },
   {
     id: "spaces",
@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   activeNavId = "home",
   onNavChange,
   navItems = defaultNavItems,
-  logo = { firstPart: "Hobby", secondPart: "Horizon" },
+  logo = { firstPart: "Hop", secondPart: "Ease" },
   className = "",
 }) => {
   // State for active navigation item

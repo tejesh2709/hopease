@@ -200,7 +200,7 @@ const Footer: React.FC = () => {
   );
 
   return (
-    <footer className="w-full bg-gradient-to-b from-[#0d0d0d] to-[#121212] pt-12 pb-8 border-t border-[#2a2a2a] mt-16 max-md:mt-10">
+    <footer className="w-full bg-gradient-to-b from-[#0d0d0d] to-[#121212] pt-12 pb-8 border-t border-[#2a2a2a] max-md:mt-10">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           className="grid grid-cols-4 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1"
