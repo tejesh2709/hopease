@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface NavItem {
   id: string;
@@ -49,19 +50,42 @@ const defaultNavItems: NavItem[] = [
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({
-  activeNavId = "home",
   onNavChange,
   navItems = defaultNavItems,
   logo = { firstPart: "Hop", secondPart: "Ease" },
   className = "",
 }) => {
-  // State for active navigation item
-  const [activeNav, setActiveNav] = useState(activeNavId);
+  const pathname = usePathname();
 
-  // Update active nav when prop changes
+  // Find the active nav item based on current URL path
+  const findActiveNavId = (path: string): string => {
+    // Find exact match first
+    const exactMatch = navItems.find((item) => item.href === path);
+    if (exactMatch) return exactMatch.id;
+
+    // If no exact match, check if path starts with any nav href
+    // This handles nested routes like /spaces/something
+    const partialMatch = navItems.find(
+      (item) => path.startsWith(item.href) && item.href !== "/"
+    );
+    if (partialMatch) return partialMatch.id;
+
+    // Default to first nav item if no match
+    return navItems[0]?.id || "home";
+  };
+
+  // State for active navigation item initialized with current path
+  const [activeNav, setActiveNav] = useState<string>(findActiveNavId(pathname));
+
+  // Update active nav when pathname changes
   useEffect(() => {
-    setActiveNav(activeNavId);
-  }, [activeNavId]);
+    const currentActiveId = findActiveNavId(pathname);
+    setActiveNav(currentActiveId);
+
+    if (onNavChange) {
+      onNavChange(currentActiveId);
+    }
+  }, [pathname, onNavChange, navItems]);
 
   // Handle navigation item click
   const handleNavClick = (navId: string) => {
@@ -97,11 +121,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       <nav className="flex flex-col space-y-2">
         {navItems.map((item) => (
           <Link key={item.id} href={item.href} passHref>
-            <motion.a
+            <motion.div
               onClick={() => handleNavClick(item.id)}
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
-              className={`group flex items-center px-5 py-3.5 rounded-xl transition-all duration-300 ${
+              className={`group flex items-center px-5 py-3.5 rounded-xl cursor-pointer transition-all duration-300 ${
                 activeNav === item.id
                   ? "bg-gradient-to-r from-purple-900/70 to-indigo-900/70 shadow-lg shadow-purple-900/20"
                   : "hover:bg-[#1f1f1f] hover:shadow-md hover:shadow-purple-900/10"
@@ -144,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               >
                 {item.name}
               </span>
-            </motion.a>
+            </motion.div>
           </Link>
         ))}
       </nav>

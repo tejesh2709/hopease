@@ -30,11 +30,11 @@ type Hobby = {
 const hobbies: Hobby[] = [
   {
     id: 1,
-    name: "Digital Art",
-    icon: "🎨",
+    name: "Movie",
+    icon: "🎬",
     progress: 33,
     level: 1,
-    description: "Learn digital illustration techniques using modern tools",
+    description: "Immerse Yourself in Cinematic Worlds",
   },
   {
     id: 2,
@@ -54,11 +54,12 @@ const hobbies: Hobby[] = [
   },
   {
     id: 4,
-    name: "Chess",
-    icon: "♟️",
+    name: "Origami",
+    icon: "✂️",
     progress: 0,
     level: 0,
-    description: "Learn strategies and improve your tactical thinking",
+    description:
+      "Discover the Meditative Art of Transforming Paper into Masterpieces",
   },
   {
     id: 5,

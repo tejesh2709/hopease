@@ -41,17 +41,16 @@ Return only a JSON array of 3 strings, where each string is a hobby name.
 export async function generateLevels(hobby: string): Promise<any[]> {
   try {
     const prompt = `
-You are an imaginative adventure guide and quest master, tasked with creating a unique, engaging, and unconventional learning journey for a user exploring the hobby "${hobby}". This is not a typical school syllabus – rather, it is an epic quest filled with intriguing missions and challenges.
+You are a whimsical quest master tasked with designing a lighthearted, engaging learning journey for a user exploring the hobby "${hobby}". This isn't a dry, standard syllabus—it's a fun expedition filled with quirky yet practical missions.
 
-For creative hobbies (such as painting, writing, or music), design the roadmap as a series of mystical quests where the user embarks on a journey to unlock their creative potential, transforming from a curious novice to an inspired master.
-
-For non-creative hobbies (such as coding, fitness, or cooking), design the roadmap as an expedition through real-world challenges, where the user overcomes obstacles, hones practical skills, and emerges as a resourceful expert.
+For creative hobbies (like painting, writing, or music), imagine the roadmap as a series of charming quests that gradually transform a curious beginner into a confident creator.  
+For non-creative hobbies (such as coding, fitness, or cooking), design the roadmap as a playful expedition where everyday challenges become stepping stones to real expertise.
 
 Generate 4 sequential levels. For each level, output an object with:
-  - "levelTitle": a short, compelling mission name (e.g., "The Initiation", "Quest of Discovery", "Mastery Unleashed")
-  - "description": an inspiring narrative that vividly explains the challenges and skills to be gained at that level, it must be clear, simple, engaging and clear at the same time
-  - "xp": a suggested numerical XP value that increases with each level (e.g., 50, 100, 200)
-  
+  - "levelTitle": a short, catchy mission name (for example, "First Leap", "Discovery Dash", "Skill Sprint", "Victory Voyage")
+  - "description": a clear, engaging explanation of the challenge and skills to be gained at that level, written in simple language with a touch of humor
+  - "xp": a numerical XP value that increases with each level (for example, 50, 100, 150, 200)
+
 Return only a valid JSON array of these level objects without any markdown formatting or extra text.
     `.trim();
 
