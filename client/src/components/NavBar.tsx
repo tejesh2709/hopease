@@ -89,7 +89,7 @@ function Navbar() {
 
   return (
     <header
-      className={`w-screen fixed z-10 transition-all duration-300 ${
+      className={`w-screen fixed z-20 transition-all duration-300 ${
         scrolled ? "backdrop-blur-md" : "bg-transparent"
       }`}
     >

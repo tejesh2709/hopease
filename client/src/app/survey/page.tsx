@@ -143,7 +143,7 @@ export default function Survey() {
         setIsTransitioning(false);
       }, 200);
     } else {
-      router.push("/dashboard");
+      router.push("/curiosity-map");
     }
   };
 
