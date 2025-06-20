@@ -96,15 +96,16 @@ const hobbies: Hobby[] = [
 ];
 
 const CuriosityMap: NextPage = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  // Remove unused isLoaded state or use it within the component
   const [hoveredHobby, setHoveredHobby] = useState<number | null>(null);
   const [expandedHobby, setExpandedHobby] = useState<number | null>(null);
   const [hobbiesData, setHobbiesData] = useState<Hobby[]>(hobbies);
   const [isLoadingLevels, setIsLoadingLevels] = useState(false);
   const [levelFetchError, setLevelFetchError] = useState<string | null>(null);
 
+  // useEffect for animation entrance if needed
   useEffect(() => {
-    setIsLoaded(true);
+    // Animation or other initialization logic can go here
   }, []);
 
   // Function to fetch hobby levels from the API
@@ -119,7 +120,8 @@ const CuriosityMap: NextPage = () => {
 
     try {
       const response = await fetch(
-        `${BACKEND_URL}/levels/${encodeURIComponent(hobby.name)}`,{method: "POST"}
+        `${BACKEND_URL}/levels/${encodeURIComponent(hobby.name)}`,
+        { method: "POST" }
       );
 
       if (!response.ok) {
@@ -129,12 +131,11 @@ const CuriosityMap: NextPage = () => {
       const levelsData = await response.json();
 
       // Add default progress to each level
-      const levelsWithProgress = levelsData.map(
-        (level: Level, index: number) => ({
-          ...level,
-          progress: index === 0 ? (hobby.progress > 0 ? 25 : 0) : 0,
-        })
-      );
+      const levelsWithProgress = levelsData.map((level: Level) => ({
+        ...level,
+        progress:
+          hobby.progress > 0 && levelsData.indexOf(level) === 0 ? 25 : 0,
+      }));
 
       // Update the hobby with fetched levels
       setHobbiesData((prevHobbies) =>
@@ -172,25 +173,6 @@ const CuriosityMap: NextPage = () => {
     expandedHobby !== null
       ? hobbiesData.find((h) => h.id === expandedHobby)
       : null;
-
-  // Calculate total XP for a hobby based on level progress
-  const calculateTotalXP = (hobby: Hobby): number => {
-    if (!hobby.levels) return 0;
-
-    return hobby.levels.reduce((total, level, index) => {
-      const levelProgress = level.progress || 0;
-      // Only add XP for levels with progress
-      if (levelProgress > 0) {
-        // If it's complete (100%), add full XP, otherwise add proportional XP
-        if (levelProgress === 100) {
-          return total + level.xp;
-        } else {
-          return total + Math.floor((level.xp * levelProgress) / 100);
-        }
-      }
-      return total;
-    }, 0);
-  };
 
   return (
     <div className="min-h-screen w-full flex bg-[#0d0d0d] text-[#f5f5f7] font-['SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif]">

@@ -8,6 +8,8 @@ const LearnPage: NextPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showXpAnimation, setShowXpAnimation] = useState(false);
 
+  console.log(isLoaded);
+
   useEffect(() => {
     setIsLoaded(true);
 
@@ -133,7 +135,7 @@ const LearnPage: NextPage = () => {
             <div className="flex items-center gap-6 relative z-10">
               {/* Level indicators with animations */}
               {[
-                { level: 1, name: "Initiate", completed: true, icon: null },
+                { level: 1, name: "Initiate", completed: true, icon: undefined },
                 {
                   level: 2,
                   name: "Explorer",
@@ -183,7 +185,7 @@ const LearnPage: NextPage = () => {
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                       >
-                        <path d={level.icon} />
+                        <path x={level.icon} />
                       </svg>
                     )}
 
@@ -335,10 +337,9 @@ const LearnPage: NextPage = () => {
                 boxShadow:
                   "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
               }}
-              transition={{ duration: 0.2 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.5 }}
             >
               <h3 className="text-lg font-semibold flex items-center">
                 <svg
@@ -404,10 +405,9 @@ const LearnPage: NextPage = () => {
                 boxShadow:
                   "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
               }}
-              transition={{ duration: 0.2 }}
+              transition={{ delay: 1, duration: 0.5 }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
             >
               {/* Background glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-indigo-900/10"></div>

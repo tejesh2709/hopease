@@ -61,18 +61,6 @@ export default function CommunitiesPage() {
     return name.toLowerCase().replace(/\s+/g, "-");
   };
 
-  // Handle community button click
-  const handleCommunityAction = (index: number) => {
-    if (selectedCommunity === index) {
-      // If already selected, navigate to spaces-detail page
-      const hobbyName = formatForUrl(hobbyCommunities[index].name);
-      router.push(`/spaces-detail/${hobbyName}`);
-    } else {
-      // Otherwise, select it
-      setSelectedCommunity(index);
-    }
-  };
-
   // Subtle fade-up animation for elements
   const fadeUp = {
     hidden: { opacity: 0, y: 10 },
@@ -195,7 +183,8 @@ export default function CommunitiesPage() {
                 </h3>
                 <p className="text-sm text-gray-400 max-w-2xl">
                   Join our Saturday live session with professional artists where
-                  you'll learn advanced techniques for digital illustration.
+                  you&apos;ll learn advanced techniques for digital
+                  illustration.
                 </p>
 
                 <div className="mt-4 flex items-center gap-4">
@@ -293,7 +282,7 @@ export default function CommunitiesPage() {
                           <span>2 active</span>
                         </div>
                         <div className="text-sm">
-                          Weekly sketch prompt: "Motion"
+                          Weekly sketch prompt: &ldquo;Motion&rdquo;
                         </div>
                       </div>
                     </motion.div>

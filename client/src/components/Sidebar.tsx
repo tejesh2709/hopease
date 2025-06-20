@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -57,22 +57,25 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const pathname = usePathname();
 
-  // Find the active nav item based on current URL path
-  const findActiveNavId = (path: string): string => {
-    // Find exact match first
-    const exactMatch = navItems.find((item) => item.href === path);
-    if (exactMatch) return exactMatch.id;
+  // Find the active nav item based on current URL path - wrapped in useCallback
+  const findActiveNavId = useCallback(
+    (path: string): string => {
+      // Find exact match first
+      const exactMatch = navItems.find((item) => item.href === path);
+      if (exactMatch) return exactMatch.id;
 
-    // If no exact match, check if path starts with any nav href
-    // This handles nested routes like /spaces/something
-    const partialMatch = navItems.find(
-      (item) => path.startsWith(item.href) && item.href !== "/"
-    );
-    if (partialMatch) return partialMatch.id;
+      // If no exact match, check if path starts with any nav href
+      // This handles nested routes like /spaces/something
+      const partialMatch = navItems.find(
+        (item) => path.startsWith(item.href) && item.href !== "/"
+      );
+      if (partialMatch) return partialMatch.id;
 
-    // Default to first nav item if no match
-    return navItems[0]?.id || "home";
-  };
+      // Default to first nav item if no match
+      return navItems[0]?.id || "home";
+    },
+    [navItems]
+  );
 
   // State for active navigation item initialized with current path
   const [activeNav, setActiveNav] = useState<string>(findActiveNavId(pathname));
@@ -85,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (onNavChange) {
       onNavChange(currentActiveId);
     }
-  }, [pathname, onNavChange, navItems]);
+  }, [pathname, onNavChange, findActiveNavId]);
 
   // Handle navigation item click
   const handleNavClick = (navId: string) => {

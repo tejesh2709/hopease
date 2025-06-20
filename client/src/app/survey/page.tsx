@@ -98,7 +98,7 @@ export default function Survey() {
         [currentIndex]: currentQuestion.type === "single" ? "" : [],
       }));
     }
-  }, [currentIndex]);
+  }, [currentIndex, answers, currentQuestion.type]);
 
   const handleOptionChange = (option: string) => {
     const updatedAnswers = { ...answers };

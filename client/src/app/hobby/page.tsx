@@ -6,12 +6,24 @@ import { motion, AnimatePresence } from "framer-motion";
 const HobbyDiscoveryPage: NextPage = () => {
   // State for hover effects and animations
   const [activeNav, setActiveNav] = useState("explore");
-  const [isLoaded, setIsLoaded] = useState(false);
   const [showXpAnimation, setShowXpAnimation] = useState(false);
-  const [currentHobby, setCurrentHobby] = useState("photography");
+  const [currentHobby, setCurrentHobby] = useState<HobbyKey>("photography");
 
-  // Hobby data
-  const hobbies = {
+  // Hobby data types
+  type HobbyKey = 'photography' | 'cooking' | 'painting' | 'coding' | 'hiking' | 'gaming';
+
+  type Hobby = {
+    name: string;
+    icon: string;
+    description: string;
+    level: number;
+    totalLevels: number;
+    progress: number;
+    streak: number;
+    recommended?: boolean;
+  };
+
+  const hobbies: Record<HobbyKey, Hobby> = {
     photography: {
       name: "Photography",
       icon: "M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z",
@@ -73,8 +85,6 @@ const HobbyDiscoveryPage: NextPage = () => {
 
   // Simulating page load
   useEffect(() => {
-    setIsLoaded(true);
-
     // Show XP animation after a delay
     const timer = setTimeout(() => {
       setShowXpAnimation(true);
@@ -336,7 +346,7 @@ const HobbyDiscoveryPage: NextPage = () => {
               <motion.div className="relative" whileHover={{ scale: 1.05 }}>
                 <select
                   value={currentHobby}
-                  onChange={(e) => setCurrentHobby(e.target.value)}
+                  onChange={(e) => setCurrentHobby(e.target.value as HobbyKey)}
                   className="appearance-none bg-[#252525] border border-[#3a3a3a] rounded-lg py-1.5 pl-3 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 >
                   {Object.entries(hobbies).map(([id, hobby]) => (
@@ -629,7 +639,7 @@ const HobbyDiscoveryPage: NextPage = () => {
                       backgroundColor: "rgba(40, 40, 40, 0.6)",
                     }}
                     className="p-4 bg-[#252525]/40 rounded-xl border border-[#333333] flex items-center gap-4 cursor-pointer"
-                    onClick={() => setCurrentHobby(id)}
+                    onClick={() => setCurrentHobby(id as HobbyKey)}
                   >
                     <div
                       className={`p-3 rounded-lg ${
@@ -715,6 +725,10 @@ const HobbyDiscoveryPage: NextPage = () => {
                 {/* Users list */}
                 <AnimatePresence>
                   <motion.ul className="mt-4 space-y-2">
+                    {/*
+                      Fixed key prop warning by using user.rank
+                      and removed unnecessary fragment
+                    */}
                     {[
                       { name: "Aiden", xp: 428, rank: 1 },
                       { name: "Sarah", xp: 342, rank: 2 },
@@ -722,7 +736,7 @@ const HobbyDiscoveryPage: NextPage = () => {
                       { name: "Miguel", xp: 197, rank: 4 },
                     ].map((user, index) => (
                       <motion.li
-                        key={user.name}
+                        key={user.rank}
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.9 + index * 0.1, duration: 0.4 }}
@@ -772,7 +786,7 @@ const HobbyDiscoveryPage: NextPage = () => {
                 boxShadow:
                   "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
               }}
-              transition={{ duration: 0.2 }}
+              // Fixed duplicate transition props
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.9, duration: 0.5 }}
@@ -844,10 +858,10 @@ const HobbyDiscoveryPage: NextPage = () => {
                 boxShadow:
                   "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
               }}
-              transition={{ duration: 0.2 }}
+              // Fixed duplicate transition props
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
+              transition={{ delay: 1.0, duration: 0.5 }}
             >
               {/* Background glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-indigo-900/10"></div>
