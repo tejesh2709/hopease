@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { genrateTop3Hobbies, generateLevels } from "../modules/gemini.ts"; // Fixed typo in function name
+import { genrateTop3Hobbies, generateLevels } from "../modules/gemini.js"; // Fixed typo in function name
 
 export async function getHobbyRecommendations(req: Request, res: Response) {
   try {

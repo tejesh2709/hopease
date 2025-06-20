@@ -1,8 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
-import {config} from "./config/index.ts";
-import webhookRoutes from "./routes/webhook.ts";
-import hobbiesRoutes from './routes/hobby.ts';
+import {config} from "./config/index.js";
+import webhookRoutes from "./routes/webhook.js";
+import hobbiesRoutes from './routes/hobby.js';
 import cors from "cors";
 const app = express();
 app.use(cors());

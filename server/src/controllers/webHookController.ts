@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import { Webhook, type WebhookRequiredHeaders } from "svix";
-import prisma from "../config/prisma.config.ts";
-import {config }from "../config/index.ts";
+import prisma from "../config/prisma.config.js";
+import {config }from "../config/index.js";
 
 interface ClerkEvent {
   data: {

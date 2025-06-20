@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { config } from "../config/index.ts";
+import { config } from "../config/index.js";
 
 const genAi = new GoogleGenerativeAI(config.genai_api_key);
 
