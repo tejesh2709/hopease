@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/index";
 import { motion } from "framer-motion";
+import Image from "next/image"; // Add this import
 
 export default function EnhancedProfile() {
   const [activeTab, setActiveTab] = useState("following");
@@ -49,10 +50,14 @@ export default function EnhancedProfile() {
             <div className="absolute bottom-[-40px] left-6 md:left-10">
               <div className="relative">
                 <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[#0d0d0d] overflow-hidden bg-[#151515]">
-                  <img
+                  {/* Replace img with Next.js Image component */}
+                  <Image
                     src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                     alt="Profile Avatar"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 96px, 112px"
+                    className="object-cover"
+                    priority
                   />
                 </div>
                 <motion.button

@@ -10,7 +10,13 @@ const HobbyDiscoveryPage: NextPage = () => {
   const [currentHobby, setCurrentHobby] = useState<HobbyKey>("photography");
 
   // Hobby data types
-  type HobbyKey = 'photography' | 'cooking' | 'painting' | 'coding' | 'hiking' | 'gaming';
+  type HobbyKey =
+    | "photography"
+    | "cooking"
+    | "painting"
+    | "coding"
+    | "hiking"
+    | "gaming";
 
   type Hobby = {
     name: string;
@@ -414,7 +420,7 @@ const HobbyDiscoveryPage: NextPage = () => {
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
-                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
                       </svg>
                       <span className="text-xs text-gray-300">
                         Level {hobbies[currentHobby].level + 1}
@@ -446,7 +452,7 @@ const HobbyDiscoveryPage: NextPage = () => {
 
                 {/* Level steps */}
                 <div className="flex justify-between relative">
-                  {[...Array(5)].map((_, index) => {
+                  {Array.from({ length: 5 }, (_, index) => {
                     const isCompleted = index <= hobbies[currentHobby].level;
                     const isCurrent = index === hobbies[currentHobby].level;
 
@@ -626,7 +632,7 @@ const HobbyDiscoveryPage: NextPage = () => {
               transition={{ delay: 0.8 }}
             >
               {Object.entries(hobbies)
-                .filter(([_, hobby]) => hobby.recommended)
+                .filter(([, hobby]) => hobby.recommended)
                 .map(([id, hobby], index) => (
                   <motion.div
                     key={id}

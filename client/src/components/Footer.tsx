@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { motion } from "framer-motion";
 
 interface SocialLink {
   name: string;
   href: string;
-  icon: JSX.Element;
+  icon: ReactElement;
 }
 
 interface FooterLink {

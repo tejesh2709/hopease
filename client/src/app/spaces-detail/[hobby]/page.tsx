@@ -9,8 +9,15 @@ export default function CommunityPage() {
   const [mounted, setMounted] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [content, setContent] = useState("");
-  const [messages, setMessages] = useState([]);
-  const messagesEndRef = useRef(null);
+  interface Message {
+    userId: string;
+    content: string;
+    time: string;
+    avatar?: string;
+    user?: string;
+  }
+  const [messages, setMessages] = useState<Message[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -28,7 +35,15 @@ export default function CommunityPage() {
     fetchMessages();
   }, []);
 
-  const formatHobbyName = (name) => {
+  interface Message {
+    userId: string;
+    content: string;
+    time: string;
+    avatar?: string;
+    user?: string;
+  }
+
+  const formatHobbyName = (name: string | string[] | undefined): string => {
     if (!name) return "";
     return name
       .toString()

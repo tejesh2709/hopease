@@ -2,10 +2,13 @@
 import React, { useId } from "react";
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import type { Container } from "@tsparticles/engine";
+import type { Container, SingleOrMultiple } from "@tsparticles/engine"; // Added import for SingleOrMultiple
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "@/lib/utils";
 import { motion, useAnimation } from "framer-motion";
+
+// Define a more specific type for effect.type
+// type EffectType = string | string[] | Record<string, unknown> | undefined;
 
 type ParticlesProps = {
   id?: string;
@@ -158,7 +161,8 @@ export const SparklesCore = (props: ParticlesProps) => {
                 close: true,
                 fill: true,
                 options: {},
-                type: {} as any,
+                // Replace the any type with our more specific type
+                type: {} as SingleOrMultiple<string> | undefined,
               },
               groups: {},
               move: {
