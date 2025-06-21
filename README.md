@@ -1,8 +1,10 @@
 # sushacks-2025
 
-This project was generated using our custom project scaffolding tool. It includes:
+Hopease is a productivity-focused web platform, aimed at helping users combat social media addiction. By encouraging mindful usage of time, the app suggests personalized skill-building paths based on individual interests—enabling users to discover hidden talents and invest in self-growth. A frontend project built using **Next.js and Tailwind CSS**.
 
-- A frontend project (React or Next.js) with optional TailwindCSS setup.
+Hopease offers a clean, responsive UI tailored for both desktop and mobile devices.
+
+This project was generated using our custom project scaffolding tool.
 
 
 
