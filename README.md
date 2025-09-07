@@ -18,6 +18,7 @@ This project was generated using our custom project scaffolding tool.
 
 ### Backend
 No backend setup was performed.
+intrested folks can pull and put of their ideas
 
 ## Notes
 - Ensure you have Node.js installed.
